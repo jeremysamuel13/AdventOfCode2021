@@ -11,9 +11,6 @@ fn main() {
 
     println!("Q1 answer is: {}", q1(&data));
     println!("Q2 answer is: {}", q2(&data));
-
-    assert_eq!(q1(&data), 336120);
-    assert_eq!(q2(&data), 96864235);
 }
 
 fn q1(data: &[DataType]) -> i32 {
