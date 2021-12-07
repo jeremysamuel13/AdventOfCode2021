@@ -112,23 +112,16 @@ fn main() {
 
     println!("Q1 answer is: {}", q1(&data));
     println!("Q2 answer is: {}", q2(&data));
-
-    let a = Vent::from((9, 7), (7, 9));
-
-    println!("{:?}", a.get_points());
 }
 
 fn q1(data: &Vec<Vent>) -> usize {
-    let vents: Vec<&Vent> = data.iter().filter(|x| x.dir != Dir::Diagonal).collect();
+    let vents: Vec<Vent> = data
+        .iter()
+        .copied()
+        .filter(|x| x.dir != Dir::Diagonal)
+        .collect();
 
-    let mut grid = HashMap::new();
-    for ele in vents {
-        for (x, y) in ele.get_points() {
-            *grid.entry((x, y)).or_insert(0) += 1;
-        }
-    }
-
-    grid.values().filter(|x| **x >= 2).count()
+    q2(&vents)
 }
 
 fn q2(data: &Vec<Vent>) -> usize {
