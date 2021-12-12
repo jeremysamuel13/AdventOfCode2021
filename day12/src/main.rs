@@ -12,13 +12,16 @@ impl AdjacencyList {
         Self { l: HashMap::new() }
     }
 
-    fn add(&mut self, a: String, b: String) {
+    fn add(&mut self, a: &str, b: &str) {
         self.l
-            .entry(a.clone())
+            .entry(a.to_string())
             .or_insert_with(Vec::new)
-            .push(b.clone());
+            .push(b.to_string());
 
-        self.l.entry(b).or_insert_with(Vec::new).push(a);
+        self.l
+            .entry(b.to_string())
+            .or_insert_with(Vec::new)
+            .push(a.to_string());
     }
 
     fn search(&self, curr: String, mut visited: HashSet<String>) -> usize {
@@ -60,12 +63,12 @@ impl AdjacencyList {
 }
 
 fn main() {
-    let data = std::fs::read_to_string(FILEPATH).expect("Unable to read file");
-    let data: Vec<&str> = data.trim().split('\n').collect();
     let mut al = AdjacencyList::new();
-    for a in data.iter().map(|x| x.split('-').collect::<Vec<&str>>()) {
-        al.add(a[0].to_string(), a[1].to_string());
-    }
+    std::fs::read_to_string(FILEPATH)
+        .expect("Unable to read file")
+        .lines()
+        .map(|x| x.split_once('-').unwrap())
+        .for_each(|(a, b)| al.add(a, b));
 
     println!("Q1 answer is: {}", q1(&al));
     println!("Q2 answer is: {}", q2(&al));
